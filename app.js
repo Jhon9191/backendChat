@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const socket = require('socket.io');
 const cors = require('cors')
-const db = require('./models/db');
+const db = require('./models/User');
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
