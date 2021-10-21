@@ -22,33 +22,53 @@ app.post('/cadastrar-usuario', async (req, res) => {
     // return res.json({
     //     dados: dados
     // });
-   
+
     const usuario = await User.findOne({
         where: {
             email: dados.email
         }
     });
 
-    if(usuario){
+    if (usuario) {
         return res.status(400).json({
             erro: true,
             message: "Este e-mail já esta cadastrado!"
         });
     }
-   
+
     await User.create(dados)
-    .then(()=>{
-        return res.json({
-            erro: false,
-            message: "Usuaário cadastradro com sucesso!"
+        .then(() => {
+            return res.json({
+                erro: false,
+                message: "Usuaário cadastradro com sucesso!"
+            });
+        })
+        .catch(() => {
+            return res.status(400).json({
+                erro: true,
+                message: "Não foi possível cadastrar o usuário!"
+            });
         });
-    })
-    .catch(()=>{
-        return res.status(400).json({
-            erro: true,
-            message: "Não foi possível cadastrar o usuário!"
-        });
+});
+
+app.post('/validar-acesso', async (req, res) => {
+    const usuario = await User.findOne({
+        attributes: ['id','name'],
+        where: {
+            email: req.body.email
+        }
     });
+    if (usuario === null) {
+        return res.status(400).json({
+            error: true,
+            mensagem: "Erro: usuário não encontrado"
+        })
+    }
+    return res.json({
+        error: false,
+        mensagem: "Login realizado com sucesso!",
+        usuario
+    })
 });
 
 const server = app.listen(8080, () => {
@@ -68,7 +88,7 @@ io.on('connect', (socket) => {
     socket.on("enviar_mensagem", (dados) => {
         //console.log(dados);
         socket.to(dados.sala).emit("mensagem_dados", dados.conteudo);
-       //console.log(dados.conteudo);
+        //console.log(dados.conteudo);
     });
 
 });
