@@ -2,8 +2,9 @@ const express = require('express');
 const app = express();
 const socket = require('socket.io');
 const cors = require('cors')
-const db = require('./models/User');
+const User = require('./models/User');
 
+app.use(express.json());
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET', 'POST', 'PUT', 'DELETE');
@@ -14,6 +15,40 @@ app.use((req, res, next) => {
 
 app.get('/', function (req, res) {
     res.send('Bem vindo!')
+});
+
+app.post('/cadastrar-usuario', async (req, res) => {
+    var dados = req.body;
+    // return res.json({
+    //     dados: dados
+    // });
+   
+    const usuario = await User.findOne({
+        where: {
+            email: dados.email
+        }
+    });
+
+    if(usuario){
+        return res.status(400).json({
+            erro: true,
+            message: "Este e-mail já esta cadastrado!"
+        });
+    }
+   
+    await User.create(dados)
+    .then(()=>{
+        return res.json({
+            erro: false,
+            message: "Usuaário cadastradro com sucesso!"
+        });
+    })
+    .catch(()=>{
+        return res.status(400).json({
+            erro: true,
+            message: "Não foi possível cadastrar o usuário!"
+        });
+    });
 });
 
 const server = app.listen(8080, () => {
