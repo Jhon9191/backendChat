@@ -4,6 +4,7 @@ const socket = require('socket.io');
 const cors = require('cors')
 const User = require('./models/User');
 const Message = require('./models/Message');
+const Sala = require('./models/Sala');
 
 app.use(express.json());
 app.use((req, res, next) => {
