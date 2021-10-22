@@ -87,7 +87,7 @@ app.post('/cadastrar-usuario', async (req, res) => {
 
 app.post('/validar-acesso', async (req, res) => {
     const usuario = await User.findOne({
-        attributes: ['id','name'],
+        attributes: ['id', 'name'],
         where: {
             email: req.body.email
         }

@@ -1,5 +1,7 @@
 const sequelize = require('sequelize');
 const db = require('./db');
+const User = require('./User');
+const Sala = require('./Sala');
 
 const Message = db.define('messages', {
     id: {
@@ -22,7 +24,10 @@ const Message = db.define('messages', {
     },
 });
 
+Message.belongsTo(User, {foreignKey: 'usuarioId',allowNull: false})
+Message.belongsTo(Sala, {foreignKey: 'sala',allowNull: false})
+
 //Criar tabela no banco
-//Message.sync();
+//Message.sync({alter: true});
 
 module.exports = Message;
