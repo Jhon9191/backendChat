@@ -15,6 +15,6 @@ const Sala = db.define('Salas', {
 });
 
 //Criar tabela no banco
-Sala.sync();
+//Sala.sync();
 
 module.exports = Sala;

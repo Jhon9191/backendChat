@@ -35,6 +35,22 @@ app.post('/cadastrar-message', async (req, res) => {
         });
 });
 
+app.post('/cadastrar-sala', async (req, res) => {
+    await Sala.create(req.body)
+        .then(() => {
+            return res.json({
+                erro: false,
+                message: "Sala cadastradro com sucesso!"
+            });
+        })
+        .catch(() => {
+            return res.status(400).json({
+                erro: true,
+                message: "Não foi possível cadastrar a sala!"
+            });
+        });
+});
+
 app.post('/cadastrar-usuario', async (req, res) => {
     var dados = req.body;
     // return res.json({
