@@ -103,7 +103,14 @@ io.on('connect', (socket) => {
     });
 
     socket.on("enviar_mensagem", (dados) => {
-        //console.log(dados);
+        console.log(dados);
+
+        Message.create({
+            mensagem: dados.conteudo.mensagem,
+            sala: dados.sala,
+            usuarioId: dados.conteudo.usuario.id
+        })
+
         socket.to(dados.sala).emit("mensagem_dados", dados.conteudo);
         //console.log(dados.conteudo);
     });
