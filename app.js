@@ -18,6 +18,22 @@ app.get('/', function (req, res) {
     res.send('Bem vindo!')
 });
 
+app.post('/cadastrar-message', async (req, res) => {
+    await Message.create(req.body)
+        .then(() => {
+            return res.json({
+                erro: false,
+                message: "Mensagem cadastradro com sucesso!"
+            });
+        })
+        .catch(() => {
+            return res.status(400).json({
+                erro: true,
+                message: "Não foi possível cadastrar a mensagem!"
+            });
+        });
+});
+
 app.post('/cadastrar-usuario', async (req, res) => {
     var dados = req.body;
     // return res.json({
