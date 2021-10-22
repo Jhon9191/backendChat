@@ -19,6 +19,35 @@ app.get('/', function (req, res) {
     res.send('Bem vindo!')
 });
 
+app.get('/listar-messsages/:sala', async (req, res) => {
+    const { sala } = req.params;
+    
+    await Message.findAll({
+        order: [['id', 'ASC']],
+        where: { 
+            sala: sala 
+        },
+        include: [{
+            model: User
+        },{
+            model: Sala
+        }]
+    })
+    .then((messages) => {
+        return res.json({
+            error: false,
+            messages
+        });
+    })
+    .catch((err) => {
+        return res.status(400).json({
+            error: true,
+            message: "Não foi possivel carregar as menssagens"
+        });
+    });
+});
+
+
 app.post('/cadastrar-message', async (req, res) => {
     await Message.create(req.body)
         .then(() => {
