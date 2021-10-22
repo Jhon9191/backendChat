@@ -21,30 +21,30 @@ app.get('/', function (req, res) {
 
 app.get('/listar-messsages/:sala', async (req, res) => {
     const { sala } = req.params;
-    
+
     await Message.findAll({
         order: [['id', 'ASC']],
-        where: { 
-            sala: sala 
+        where: {
+            sala: sala
         },
         include: [{
             model: User
-        },{
+        }, {
             model: Sala
         }]
     })
-    .then((messages) => {
-        return res.json({
-            error: false,
-            messages
+        .then((messages) => {
+            return res.json({
+                error: false,
+                messages
+            });
+        })
+        .catch((err) => {
+            return res.status(400).json({
+                error: true,
+                message: "Não foi possivel carregar as menssagens"
+            });
         });
-    })
-    .catch((err) => {
-        return res.status(400).json({
-            error: true,
-            message: "Não foi possivel carregar as menssagens"
-        });
-    });
 });
 
 

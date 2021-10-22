@@ -29,5 +29,5 @@ Message.belongsTo(Sala, {foreignKey: 'sala',allowNull: false})
 
 //Criar tabela no banco
 //Message.sync({alter: true});
-
+//Message.sync();
 module.exports = Message;
