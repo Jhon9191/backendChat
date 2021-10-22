@@ -3,6 +3,7 @@ const app = express();
 const socket = require('socket.io');
 const cors = require('cors')
 const User = require('./models/User');
+const Message = require('./models/Message');
 
 app.use(express.json());
 app.use((req, res, next) => {
